@@ -106,38 +106,23 @@
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <!-- React 18 (chargé depuis Internet, avec une source de secours) -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
+  <script src="vendor/react.production.min.js"></script>
   <script>window.React||document.write('<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"><\/script>');</script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
+  <script src="vendor/react-dom.production.min.js"></script>
   <script>window.ReactDOM||document.write('<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"><\/script>');</script>
-  <script src="https://cdn.tailwindcss.com" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Rubik:wght@500;700;800&family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <script>
-    // Câble les polices importées dans les utilitaires Tailwind (font-sans / font-mono)
-    // — sans ça, les imports Google Fonts ci-dessus ne servent à rien.
-    // Charte "Academic Excellence" : plus de serif (Fraunces) — tout en Inter, mono en JetBrains Mono.
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-            mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
-          },
-        },
-      },
-    };
-  </script>
   <!-- Firebase (version compat = plus simple, pas besoin de "import") -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
+  <script src="vendor/firebase-app-compat.js"></script>
   <script>window.firebase||document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.7.1/firebase-app-compat.js"><\/script>');</script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
+  <script src="vendor/firebase-database-compat.js"></script>
   <script>(window.firebase&&firebase.database)||document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.7.1/firebase-database-compat.js"><\/script>');</script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
+  <script src="vendor/firebase-auth-compat.js"></script>
   <script>(window.firebase&&firebase.auth)||document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.7.1/firebase-auth-compat.js"><\/script>');</script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
+  <script src="vendor/firebase-messaging-compat.js"></script>
   <script>(window.firebase&&firebase.messaging)||document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.7.1/firebase-messaging-compat.js"><\/script>');</script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" onload="__sabiLibSauver(this)" onerror="__sabiLibSecours(this)"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
+  <script src="vendor/emailjs.min.js"></script>
+  <script>window.emailjs||document.write('<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"><\/script>');</script>
+  <script defer src="vendor/marked.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js"></script>
@@ -1864,6 +1849,8 @@ html.sabi-lite button { transition: none; }
 html.sabi-lite .fixed.inset-0, html.sabi-lite .fixed.inset-0 > * { animation: none !important; }
 
 </style>
+  <!-- Styles Tailwind intégrés à l'appli (plus de téléchargement depuis Internet) -->
+  <link rel="stylesheet" href="tailwind.css" />
 </head>
 <body>
   <div id="root"></div>
