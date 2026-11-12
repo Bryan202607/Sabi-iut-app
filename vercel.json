@@ -1,0 +1,10 @@
+{
+  "outputDirectory": "www",
+  "functions": { "api/*.js": { "maxDuration": 60 } },
+  "rewrites": [
+    { "source": "/.netlify/functions/:nom", "destination": "/api/:nom" }
+  ],
+  "crons": [
+    { "path": "/api/rappel-quotidien", "schedule": "0 7 * * *" }
+  ]
+}
