@@ -1,0 +1,164 @@
+name: Build APK Android (avec blocage des captures d'ecran)
+
+on:
+  workflow_dispatch:
+    inputs:
+      pour_captures_ecran:
+        description: "Compiler SANS le blocage de capture (uniquement pour prendre les screenshots Play Store — ne jamais publier cette version)"
+        type: boolean
+        default: false
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v5
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Installer les dependances
+        run: npm install
+
+      - name: Ajouter la plateforme Android
+        run: npx cap add android
+
+      - name: Numero de version automatique (monte tout seul a chaque build)
+        run: |
+          F=android/app/build.gradle
+          sed -i -E "s/versionCode [0-9]+/versionCode ${{ github.run_number }}/; s/versionName \"[^\"]*\"/versionName \"1.0.${{ github.run_number }}\"/" "$F"
+          grep -n "versionCode\|versionName" "$F" || true
+
+      - name: Abaisser la version minimale d'Android (compatibilite maximale)
+        run: python3 scripts/patch_compat.py
+
+      - name: Generer l'icone de l'app (fond sombre + "S" dore, ou icon-source.png si present)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-dejavu-core > /dev/null
+          pip install pillow -q
+          python3 scripts/generate_icon.py
+
+      - name: Synchroniser le contenu web (www/) vers l'app Android
+        run: npx cap sync android
+
+      - name: Generer l'ecran de demarrage (logo Sabi centre sur fond sombre)
+        run: python3 scripts/generate_splash.py
+
+      - name: Configurer Firebase Cloud Messaging (notifications push natives)
+        run: python3 scripts/patch_google_services.py
+
+      - name: Choisir la version de MainActivity (protegee, ou sans protection pour captures Play Store)
+        run: |
+          DEST="android/app/src/main/java/com/sabi/app/MainActivity.java"
+          mkdir -p "$(dirname "$DEST")"
+          if [ "${{ github.event.inputs.pour_captures_ecran }}" = "true" ]; then
+            echo "::warning::Build SANS FLAG_SECURE — pour captures Play Store uniquement, a ne pas publier."
+            cp android-template/MainActivity-captures-ecran.java "$DEST"
+          else
+            cp android-template/MainActivity.java "$DEST"
+          fi
+
+      - name: Icones alternatives (changer l'icone de l'app depuis le menu Sabi)
+        run: python3 scripts/patch_icones.py
+
+      - name: Installer Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Verifier si la cle de signature est disponible
+        id: cle
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "disponible=$([ -n \"$ANDROID_KEYSTORE_BASE64\" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Configurer la signature (Play Store) si la cle est fournie
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: python3 scripts/patch_signing.py
+
+      - name: Cle de signature fixe (les mises a jour s'installent par-dessus l'ancienne version)
+        env:
+          SABI_KS: ${{ secrets.SABI_DEBUG_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$SABI_KS" ]; then
+            mkdir -p ~/.android
+            echo "$SABI_KS" | base64 -d > ~/.android/debug.keystore
+            echo "Cle de signature fixe installee."
+          else
+            echo "::warning::Secret SABI_DEBUG_KEYSTORE_BASE64 absent : la signature change a chaque build (mise a jour impossible par-dessus)."
+          fi
+
+      - name: Compiler l'APK (de test)
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleDebug
+
+      - name: Publier l'APK compile
+        uses: actions/upload-artifact@v5
+        with:
+          name: sabi-android-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Renommer l'APK pour un lien de telechargement plus lisible
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/sabi.apk
+          (cd android/app/build/outputs/apk/debug && zip -q sabi.zip sabi.apk)
+
+      - name: Publier un lien de telechargement public (accessible a tous, sans compte GitHub)
+        if: ${{ github.event.inputs.pour_captures_ecran != 'true' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: sabi-derniere-version
+          name: "Sabi — dernière version"
+          body: "Télécharge sabi.apk ci-dessous et installe-le (autorise \"sources inconnues\" si demandé)."
+          files: |
+            android/app/build/outputs/apk/debug/sabi.apk
+            android/app/build/outputs/apk/debug/sabi.zip
+          prerelease: false
+
+      - name: Preparer le site de telechargement (la page et l'APK au meme endroit = barre de progression)
+        if: ${{ github.event.inputs.pour_captures_ecran != 'true' }}
+        continue-on-error: true
+        run: |
+          mkdir -p pages-out
+          cp android/app/build/outputs/apk/debug/sabi.apk pages-out/sabi.apk
+          cp android/app/build/outputs/apk/debug/sabi.zip pages-out/sabi.zip
+          if [ -f site/index.html ]; then
+            cp site/index.html pages-out/index.html
+          else
+            echo "::warning::site/index.html absent du depot : seul sabi.apk est publie sur le site."
+          fi
+          touch pages-out/.nojekyll
+
+      - name: Publier le site de telechargement (GitHub Pages, branche gh-pages)
+        if: ${{ github.event.inputs.pour_captures_ecran != 'true' }}
+        continue-on-error: true
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pages-out
+          publish_branch: gh-pages
+          force_orphan: true
+
+      - name: Compiler l'AAB signe (pour le Play Store, uniquement si la cle est fournie)
+        if: steps.cle.outputs.disponible == 'true'
+        working-directory: android
+        run: ./gradlew bundleRelease
+
+      - name: Publier l'AAB signe
+        if: steps.cle.outputs.disponible == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: sabi-playstore-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
