@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sabi – L'appli des étudiants de l'IUT FV Bandjoun</title>
+<meta name="description" content="Télécharge Sabi : épreuves, corrigés, résumés, assistante vocale IA et outils de révision pour les étudiants de l'IUT FV Bandjoun.">
+<meta name="theme-color" content="#0b0a12">
+<style>
+:root{--bg:#0b0a12;--s:#14121f;--s2:#1a1728;--b:#2b2742;--t:#eeebfa;--m:#bdb7d9;--f:#8f89b0;--a:#a99bff;--ok:#6ee7a8}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+a{color:inherit}
+.w{max-width:960px;margin:0 auto;padding:0 18px}
+header{position:sticky;top:0;z-index:5;background:rgba(11,10,18,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--b)}
+header .w{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none}
+.logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#a99bff,#6a5af0);display:grid;place-items:center;color:#0b0a12;font-style:normal;font-weight:900}
+nav a{margin-left:16px;font-size:14px;color:var(--m);text-decoration:none}
+nav a:hover{color:var(--t)}
+.hero{padding:56px 0 36px;text-align:center;background:radial-gradient(ellipse at 50% 0,rgba(169,155,255,.22),transparent 65%)}
+.tag{display:inline-block;font:12px ui-monospace,monospace;color:var(--a);border:1px solid var(--b);border-radius:99px;padding:4px 12px;margin-bottom:16px}
+h1{font-size:clamp(30px,7vw,52px);line-height:1.1;font-weight:850;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--a)}
+.sub{max-width:560px;margin:16px auto 28px;color:var(--m);font-size:17px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 28px;border-radius:99px;background:var(--a);color:#0b0a12;font-weight:800;font-size:17px;text-decoration:none;box-shadow:0 8px 30px rgba(169,155,255,.35);transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.meta{margin-top:14px;font:12px ui-monospace,monospace;color:var(--f);min-height:18px}
+section{padding:40px 0}
+h2{font-size:26px;font-weight:800;margin-bottom:6px}
+.lead{color:var(--m);margin-bottom:22px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.card{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:16px}
+.card .e{font-size:26px}
+.card h3{font-size:16px;margin:6px 0 4px}
+.card p{font-size:14px;color:var(--m)}
+.steps{counter-reset:s;display:grid;gap:12px}
+.step{display:flex;gap:14px;background:var(--s);border:1px solid var(--b);border-radius:16px;padding:16px}
+.step::before{counter-increment:s;content:counter(s);flex:none;width:34px;height:34px;border-radius:50%;background:var(--a);color:#0b0a12;font-weight:800;display:grid;place-items:center}
+.step b{display:block}.step span{color:var(--m);font-size:14px}
+.q{width:100%;background:var(--s);border:1px solid var(--b);color:var(--t);border-radius:99px;padding:12px 18px;font-size:16px;outline:none;margin-bottom:14px}
+.q:focus{border-color:var(--a)}
+details{background:var(--s);border:1px solid var(--b);border-radius:14px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;display:flex;justify-content:space-between;gap:10px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--a);font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+.bd{padding:0 16px 14px;color:var(--m);font-size:15px}
+.bd p{margin:8px 0}.bd h4{color:var(--t);margin:14px 0 4px;font-size:15px}
+.bd ul{margin:6px 0 6px 20px}.bd li{margin:4px 0}
+.fresh{font:12px ui-monospace,monospace;color:var(--f);margin-top:6px}
+.fresh b{color:var(--ok);font-weight:400}
+footer{border-top:1px solid var(--b);padding:28px 0 40px;text-align:center;color:var(--f);font-size:13px}
+.note{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.35);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--m);margin-top:14px}
+#avis .box,#apres{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:14px 16px;margin:18px auto 0;max-width:560px;text-align:left;font-size:14px;color:var(--m)}
+#avis .box b,#apres b{color:var(--t)}
+#avis .warn{border-color:rgba(251,146,60,.5);background:rgba(251,146,60,.08)}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;margin-top:10px;border-radius:99px;border:1px solid var(--a);color:var(--a);background:transparent;font:600 14px system-ui;text-decoration:none;cursor:pointer}
+#apres ol{margin:8px 0 0 18px}#apres li{margin:6px 0}
+#lien{max-width:560px;margin:14px auto 0;text-align:left;background:var(--s);border:1px solid var(--b);border-radius:16px;padding:12px 14px;font-size:13px;color:var(--m)}
+#lien .u{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--t);word-break:break-all;margin:4px 0 8px}
+#lien .r{display:flex;gap:8px;flex-wrap:wrap}
+#lien a.btn2,#lien button.btn2{margin-top:0}
+#prog{display:none;background:var(--s);border:1px solid var(--b);border-radius:16px;padding:16px;margin:18px auto 0;max-width:560px;text-align:left;font-size:14px;color:var(--m)}
+#prog.on{display:block}
+#prog .t{color:var(--t);font-weight:700;font-size:15px;display:flex;justify-content:space-between;gap:8px}
+#prog .barre{height:12px;border-radius:99px;background:var(--b);overflow:hidden;margin:12px 0 8px}
+#prog .barre i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--a),#6ee7a8);transition:width .25s ease}
+#prog .barre.indet i{width:35%;animation:ind 1.1s ease-in-out infinite alternate}
+@keyframes ind{from{margin-left:0}to{margin-left:65%}}
+#prog .ligne{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+#prog .ok{color:#6ee7a8;font-weight:700}
+#prog .err{color:#ff9aa8}
+.sec{background:var(--s);border:1px solid var(--b);border-radius:14px;margin-top:10px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="w"><a class="logo" href="#"><i>S</i>Sabi</a><nav><a href="#installer">Installer</a><a href="#guide">Guide</a></nav></div></header>
+
+<div class="hero"><div class="w">
+  <span class="tag">IUT FV Bandjoun · Android</span>
+  <h1>Tes épreuves, tes cours et ton <em>assistante IA</em> dans la poche</h1>
+  <p class="sub">Sabi réunit les anciens sujets avec corrigés, les résumés de cours, les outils de révision et une assistante vocale, même sans connexion.</p>
+  <a class="btn" id="dl" href="#" download>⬇ Télécharger l'APK</a>
+  <a class="btn2" id="dlz" href="#" download="sabi.zip" style="display:none;margin-top:12px;min-height:50px;flex-direction:column;padding:8px 22px;line-height:1.25"><span>🗜 Télécharger le .zip</span><span style="font-weight:500;font-size:12px">Conseillé pour les nouveaux : jamais bloqué</span></a>
+  <div class="meta" id="zipnote" style="display:none;margin-top:6px">Nouveau sur Sabi ? Prends le .zip : ouvre-le dans Fichiers, touche <b>Extraire</b>, puis installe sabi.apk. Pas de « Non confirmé ».</div>
+  <div class="meta" id="meta">Android · fichier .apk</div>
+  <div id="prog" aria-live="polite"></div>
+  <div id="lien"></div>
+  <div id="avis"></div>
+  <div id="apres" hidden></div>
+</div></div>
+
+<section><div class="w">
+  <h2>Ce que Sabi te donne</h2><p class="lead">Un seul endroit pour réviser mieux et plus vite.</p>
+  <div class="grid">
+    <div class="card"><div class="e">📚</div><h3>Épreuves & corrigés</h3><p>Les anciens sujets de ta filière, avec corrigés. Télécharge-les pour les lire sans connexion.</p></div>
+    <div class="card"><div class="e">🎤</div><h3>Assistante vocale</h3><p>Pose une question à la voix : elle répond à partir de tes épreuves et cours (Sabi Pro+).</p></div>
+    <div class="card"><div class="e">🔥</div><h3>Studio de révision</h3><p>Série quotidienne, quiz éclair, dates d'examen et cartes mémoire.</p></div>
+    <div class="card"><div class="e">🔒</div><h3>Hors connexion sécurisé</h3><p>Les épreuves téléchargées sont chiffrées et ne s'ouvrent que dans Sabi.</p></div>
+    <div class="card"><div class="e">🏆</div><h3>Classements & badges</h3><p>Gagne des points, débloque des badges et monte dans le classement.</p></div>
+    <div class="card"><div class="e">🗺️</div><h3>Vie du campus</h3><p>Carte, chat, actualités et profils des membres.</p></div>
+  </div>
+</div></section>
+
+<section id="installer"><div class="w">
+  <h2>Installer en 3 étapes</h2><p class="lead">Sur un téléphone Android.</p>
+  <div class="steps">
+    <div class="step"><div><b>Télécharge le fichier</b><span>Touche « Télécharger l'application ». Le fichier <i>sabi.apk</i> arrive dans tes téléchargements (ouvre toujours le plus récent s'il y en a plusieurs : « sabi (2).apk », etc.).</span></div></div>
+    <div class="step"><div><b>Ouvre-le et autorise</b><span>Touche le fichier. Si Android le demande, autorise « Installer des applis inconnues » pour ton navigateur ou ton gestionnaire de fichiers, puis touche Installer.</span></div></div>
+    <div class="step"><div><b>Ouvre Sabi</b><span>Crée ton compte avec ton année et ta filière, et c'est parti.</span></div></div>
+  </div>
+  <h2 style="margin-top:28px;font-size:20px">Ça bloque ? Voici quoi faire</h2>
+  <details class="sec"><summary>« Application bloquée par Play Protect »</summary><div class="bd"><p>Normal : Sabi n'est pas (encore) sur le Play Store. Sur l'écran d'avertissement, ne touche pas « OK » :</p><ol><li>Touche la petite flèche <b>« Plus de détails »</b>.</li><li>Touche <b>« Installer quand même »</b>.</li></ol><p>Si cette option n'apparaît pas : Play Store &gt; ta photo de profil &gt; Play Protect &gt; roue crantée &gt; désactive « Analyser les applis avec Play Protect », installe Sabi, puis <b>réactive-le</b> tout de suite.</p></div></details>
+  <details class="sec"><summary>« Application non installée »</summary><div class="bd"><p>Presque toujours, tu as déjà une ancienne version de Sabi signée autrement.</p><ol><li><b>Désinstalle l'ancien Sabi</b> (appui long sur l'icône &gt; Désinstaller).</li><li>Supprime les anciens fichiers sabi.apk de tes téléchargements.</li><li>Retélécharge et réinstalle. Tes données Sabi sont gardées sur ton compte : reconnecte-toi.</li></ol><p>Vérifie aussi que ton téléphone a assez d'espace libre. Si le fichier est incomplet, retélécharge-le avec une bonne connexion.</p></div></details>
+  <details class="sec" id="aide-crd"><summary>Fichier « Non confirmé … .crdownload » ou « Téléchargement en attente »</summary><div class="bd"><p>Le fichier est en général <b>complet</b> (même taille que l'appli, environ 7 Mo) : Chrome attend juste une confirmation qui ne s'affiche pas, surtout quand le lien a été ouvert depuis WhatsApp ou Facebook.</p><p><b>Solution immédiate, sans retélécharger :</b></p><ol><li>Ouvre l'appli <b>Fichiers</b> &gt; <b>Téléchargements</b>.</li><li>Garde le doigt sur « Non confirmé … .crdownload » &gt; <b>Renommer</b>.</li><li>Écris <b>sabi.apk</b> puis valide, touche le fichier et <b>Installer</b>.</li></ol><p><b>Pour éviter le problème :</b></p><ol><li>Ouvre cette page dans <b>Chrome</b> (pas dans WhatsApp) : touche <b>⋮</b> puis « Ouvrir dans Chrome ».</li><li>Si Chrome affiche « Conserver ? », touche <b>Conserver</b>.</li><li>Sinon, utilise le <b>Plan B (.zip)</b> : un fichier zip n'est jamais bloqué. Ouvre-le dans Fichiers, touche <b>Extraire</b>, puis installe sabi.apk.</li></ol></div></details>
+  <details class="sec"><summary>Le téléchargement ne démarre pas</summary><div class="bd"><p>Ouvre cette page dans <b>Chrome</b> (pas dans WhatsApp, Facebook ou TikTok : ces navigateurs intégrés bloquent les .apk). Vérifie ta connexion et le stockage. En dernier recours, utilise le <a href="https://github.com/bryansikame2025/Sabi_app/releases/tag/sabi-derniere-version" style="color:var(--a)">lien direct de la dernière version</a>.</p></div></details>
+  <details class="sec"><summary>Mettre à jour Sabi</summary><div class="bd"><p>Retélécharge la dernière version et installe-la par-dessus. Si Android répond « Application non installée », désinstalle d'abord l'ancienne (une seule fois).</p></div></details>
+  <div class="note">⚠️ Sabi n'est pas encore sur le Play Store, d'où l'avertissement. Il disparaîtra une fois l'appli publiée.</div>
+</div></section>
+
+<section id="guide"><div class="w">
+  <h2>Comment ça marche</h2>
+  <p class="lead">Le guide complet de l'application, toujours à jour.</p>
+  <input class="q" id="q" type="search" placeholder="Rechercher dans le guide…" aria-label="Rechercher dans le guide">
+  <div id="g"></div>
+  <p class="fresh" id="fresh"></p>
+</div></section>
+
+<footer><div class="w">Sabi · IUT FV Bandjoun<br>Ce site se met à jour tout seul à chaque nouvelle version de l'appli.</div></footer>
+
+<script>
+(function(){
+var DEPOT="bryansikame2025/Sabi_app", BRANCHE="main";
+var SOURCE="https://raw.githubusercontent.com/"+DEPOT+"/"+BRANCHE+"/www/index.html";
+var API="https://api.github.com/repos/"+DEPOT+"/releases/tags/sabi-derniere-version";
+var APK="https://github.com/"+DEPOT+"/releases/download/sabi-derniere-version/sabi.apk";
+var COPIE=[{"icone":"user","titre":"1. Créer un compte et se connecter","blocs":[{"type":"p","texte":"À la première ouverture, choisis Créer un compte. Renseigne ton pseudo, ton email, un mot de passe, ton année et ta filière. Le matricule est optionnel à l'inscription, tu pourras le renseigner plus tard depuis ton profil. Une fois enregistré, il devient définitif : pour le modifier, il faut passer par une demande de déblocage."},{"type":"p","texte":"Un code de vérification (OTP) peut être envoyé à ton email pour confirmer ton inscription. Si tu as déjà un compte, choisis simplement Se connecter avec ton email et ton mot de passe."}]},{"icone":"compass","titre":"2. Se repérer dans l'application","blocs":[{"type":"p","texte":"En haut de l'écran : le menu (les trois traits) à gauche ouvre les paramètres, l'accès à l'Assistance et aux Crédits ; l'icône de profil à droite mène à ton espace personnel."},{"type":"p","texte":"En bas de l'écran, cinq onglets principaux :"},{"type":"list","items":["Actualités. Fil d'infos et astuces de la communauté","Épreuves. Sujets d'examens et corrigés","Accueil. Tableau de bord personnel","Carte. Plan interactif du campus","Chat. Discussion et entraide"]},{"type":"p","texte":"Tu peux glisser le doigt horizontalement pour passer d'un onglet à l'autre, comme pour tourner une page. Sur un écran secondaire (Profil, Boussole, Boutique...), un glissement depuis le bord gauche fait office de bouton retour."}]},{"icone":"file-text","titre":"3. Actualités","blocs":[{"type":"p","texte":"Ce fil regroupe les astuces, plans et annonces publiées par la communauté. Deux vues sont possibles : Récentes (les annonces épinglées d'abord, puis les plus récentes) et Tendances (triées par votes). Une carte marquée [VÉRIFIÉ] vient d'un membre Sabi VIP, un bon repère de fiabilité."},{"type":"p","texte":"Le bouton rond en bas à droite ouvre l'écran Publier pour ajouter ta propre actualité."}]},{"icone":"book","titre":"4. Épreuves","blocs":[{"type":"p","texte":"Retrouve les anciens sujets d'examen et leurs corrigés, filtrables par année, filière, semestre et matière. Le contenu correspondant à ta promo apparaît en priorité. L'accès complet aux épreuves et à leurs corrections est réservé aux abonnés Sabi Pro."}]},{"icone":"home","titre":"5. Accueil","blocs":[{"type":"p","texte":"Ton tableau de bord : message du matin, astuce du jour, niveau et points, raccourcis vers le Classement, les Membres, la Carte et la Boussole, ainsi que trois fonctionnalités mises en avant : MyScore, le Simulateur de moyenne et les Résumés de cours."},{"type":"p","texte":"Tu y trouves aussi la mascotte Sabi (elle t'encourage, et s'inquiète si tu disparais plus de 3 jours), la Roue du jour et ton Carnet d'astuces."}]},{"icone":"map","titre":"6. Carte du campus","blocs":[{"type":"p","texte":"Une carte interactive (GPS réel) du campus pour te repérer entre les bâtiments, les salles et les points de photocopie."}]},{"icone":"message-circle","titre":"7. Chat","blocs":[{"type":"p","texte":"Un espace de discussion pour les astuces, les plans et l'entraide entre étudiants."}]},{"icone":"user","titre":"8. Profil et fonctionnalités secondaires","blocs":[{"type":"p","texte":"L'icône de profil en haut à droite ouvre ton espace personnel : pseudo, points, badges, abonnement, et un accès à toutes les fonctionnalités secondaires, regroupées par thème :"},{"type":"sous-titre","texte":"Académique"},{"type":"list","items":["MyScore : consulte tes notes dès qu'elles sont publiées, et exporte-les en PDF","Résumés de cours : fiches réservées aux abonnés Pro+","Simulateur de moyenne : calcule la note qu'il te faut à l'examen pour valider ton semestre"]},{"type":"sous-titre","texte":"Accompagnement"},{"type":"list","items":["Coach Réussite : mentor IA réservé aux abonnés Pro+, avec diagnostic, plan de révision et quiz","Boussole : parcours guidé des démarches administratives pour les nouveaux arrivants","Assistance : écris directement au responsable de l'application"]},{"type":"sous-titre","texte":"Communauté"},{"type":"list","items":["Classement : top contributeurs de la semaine","Boutique, VIP et Bounty : dépense tes points en badges, demande le statut VIP, ou lance/réponds à des primes (bounty) entre étudiants","Membres inscrits : annuaire des étudiants par filière"]},{"type":"p","texte":"Chaque contribution utile (astuce, réponse, publication) rapporte des points, qui font progresser ton niveau : Nouveau, Junior de l'IUT, Ancien de l'IUT, puis Griot Suprême."}]},{"icone":"crown","titre":"9. Sabi Pro et Pro+","blocs":[{"type":"p","texte":"Depuis la Boutique, deux formules au choix, en abonnement semestriel ou annuel :"},{"type":"sous-titre","texte":"Sabi Pro"},{"type":"list","items":["Accès complet aux épreuves et corrections","Badge Pro doré","Recherche et filtres illimités"]},{"type":"sous-titre","texte":"Sabi Pro+"},{"type":"list","items":["Tous les avantages Pro","Résumés de cours exclusifs","Groupe WhatsApp d'entraide","Badge Pro+ doré"]},{"type":"p","texte":"Le paiement se fait par Orange Money ou MTN MoMo. Suis les indications affichées sur l'écran de souscription : selon la configuration en place, l'activation est soit automatique après confirmation du paiement, soit manuelle après vérification par un administrateur (quelques heures)."}]},{"icone":"bot","titre":"10. Coach Réussite : pratique, focus et sauvetage","blocs":[{"type":"p","texte":"Le Coach (réservé aux abonnés Pro+) se divise en trois blocs : Coach & Diagnostic, Pratique & Révision, et Focus Hub."},{"type":"sous-titre","texte":"Pratique & Révision"},{"type":"list","items":["Mode Sauvetage : appuie sur « Lancer le plan de crise », le téléphone vibre, l'écran se teinte d'alerte et le plan de crise en 48 h s'affiche juste en dessous. Appuie sur « Terminer » pour couper le mode à tout moment.","Quiz IA : 5 questions générées sur un résumé publié ou un sujet libre. Un score parfait compte dans ta progression et débloque le badge Sans faute.","Quiz duel : après ton quiz, touche « Défier un ami » pour obtenir un code à 6 caractères à partager. Ton ami le saisit dans « Relever un duel » et vous comparez vos scores. Tes duels lancés apparaissent dans « Mes duels »."]},{"type":"sous-titre","texte":"Focus Hub"},{"type":"list","items":["Choisis ta durée (15, 25, 45, 60 min ou la tienne, de 1 à 180 min), puis « Lancer ». Le bouton devient « Terminer » ; tu peux aussi mettre en pause.","Pendant la session : vibration au départ, écran teinté, écran gardé allumé, et les bulles de Sabi sont mises en sourdine (elles reviennent à la fin). Pense à activer « Ne pas déranger » sur ton téléphone : Sabi ne peut pas bloquer les notifications des autres applications.","Seules les minutes réellement travaillées sont comptées. Chaque jour de focus prolonge ta flamme de série."]}]},{"icone":"trophy","titre":"11. Jeux, badges et classements","blocs":[{"type":"sous-titre","texte":"Classement"},{"type":"list","items":["Quiz : les meilleures réponses de la semaine, dans ta filière ou dans toute l'école. Seuls tes 5 premiers quiz de la journée comptent. Remise à zéro chaque semaine.","Focus : les minutes de focus de la semaine, plus le défi entre filières.","Défis : 3 objectifs hebdomadaires (2 h de focus, 10 bonnes réponses, un quiz parfait). Une fois atteints, touche « Réclamer » pour recevoir tes points.","Contributions : les plus actifs de la semaine."]},{"type":"sous-titre","texte":"Badges automatiques"},{"type":"list","items":["Marathonien : 2 h de focus dans la semaine.","Sans faute : un quiz parfait.","Lève-tôt : une session de focus (10 min minimum) lancée avant 7 h.","Flamme 7 jours : 7 jours de focus d'affilée.","Ils apparaissent verrouillés dans la Boutique et se débloquent tout seuls, avec des confettis."]},{"type":"sous-titre","texte":"Petits plaisirs"},{"type":"list","items":["Roue du jour : un tour gratuit par jour depuis l'Accueil (de 0 à 10 points).","Carnet d'astuces : touche le cœur sur une astuce (Accueil ou Focus Hub) pour la garder dans Mon carnet, consultable même hors ligne.","Confettis, sons et vibrations à chaque réussite. Les sons se coupent dans le menu."]}]},{"icone":"zap","titre":"12. Studio Sabi : série, quiz éclair, examens et cartes","blocs":[{"type":"p","texte":"Le Studio (Accueil > Studio Sabi, ou Profil > Académique) réunit quatre outils pour réviser un peu chaque jour."},{"type":"list","items":["Série. Ouvre Sabi et révise chaque jour pour allumer ta flamme : plus tu enchaînes de jours, plus ta série grandit.","Quiz. Des questions rapides tirées de tes cours pour tester tes connaissances.","Examens. Enregistre tes dates d'examen : Sabi te dit combien de jours il te reste.","Cartes. Des cartes mémoire pour apprendre par cœur les définitions et formules."]}]},{"icone":"book","titre":"13. Utiliser Sabi hors connexion","blocs":[{"type":"p","texte":"Dans la fiche d'une épreuve, appuie sur le bouton de téléchargement hors ligne. L'épreuve est enregistrée, chiffrée, dans Sabi : elle ne peut être ouverte que dans l'application, pas depuis la galerie ni un autre logiciel."},{"type":"list","items":["Les épreuves téléchargées restent disponibles 30 jours, puis elles sont supprimées automatiquement.","Retrouve-les dans le panneau des téléchargements pour les rouvrir ou les supprimer.","Sans Internet, Sabi affiche un écran hors connexion qui donne accès à tes épreuves téléchargées."]}]},{"icone":"bot","titre":"14. Assistante vocale Sabi (Pro+)","blocs":[{"type":"p","texte":"Réservée aux abonnés Sabi Pro+. Touche le bouton micro flottant (ou Accueil > Assistante vocale), puis parle ou écris ta question."},{"type":"list","items":["Elle répond à partir des épreuves, des résumés et du guide de l'appli, et indique ses sources.","Commandes vocales : « ouvre le classement », « quel est mon prochain examen ? », « combien de jours de série ? ».","Quiz oral : dis « interroge-moi sur … » et réponds à voix haute ; dis « stop » pour arrêter.","Mode Libre : elle réécoute automatiquement après chaque réponse.","Hors connexion, elle cherche dans tes épreuves téléchargées (réponse locale, sans IA) ; la dictée vocale demande Internet.","Pendant une session de focus, elle se met en pause : plus de bouton, plus de voix."]}]},{"icone":"user","titre":"15. Photo de profil, membres et personnalisation","blocs":[{"type":"list","items":["Photo de profil. Dans Profil, touche ta photo pour la choisir et la recadrer ; tu peux la retirer à tout moment.","Membres. La liste affiche les photos, badges et points ; touche un membre pour voir son profil.","Mode rapide. Dans le menu (trois traits), réduit les animations pour les téléphones modestes.","Icône de l'application. Dans le menu, choisis une autre couleur d'icône (version Android installée)."]}]},{"icone":"wrench","titre":"16. Paramètres et assistance","blocs":[{"type":"p","texte":"Le menu (les trois traits) en haut à gauche donne accès au mode clair/sombre, aux notifications, aux sons, à l'Assistance (message direct au responsable), au Guide d'utilisation et aux Crédits de l'application."},{"type":"p","texte":"Sabi fonctionne aussi hors connexion : les dernières informations enregistrées sur ton appareil restent consultables, un bandeau te prévient quand tu es hors ligne. Une bannière peut te proposer d'installer l'application sur ton téléphone pour un accès plus rapide."}]}];
+var URL_VERSION_WEB="";/* ← colle ici l'adresse de la version web (ancien site), ex. https://mon-site.netlify.app */
+var ua=navigator.userAgent||"";
+var estAndroid=/Android/i.test(ua), estIphone=/iPhone|iPad|iPod/i.test(ua);
+var dansAppli=/FBAN|FBAV|FB_IAB|Instagram|TikTok|musical_ly|Snapchat|Line\/|MicroMessenger|Twitter/i.test(ua)||(estAndroid&&/; wv\)/.test(ua));
+var btn=document.getElementById("dl"),avis=document.getElementById("avis"),apres=document.getElementById("apres");
+var viaAppli=/^android-app:\/\//i.test(document.referrer||"")&&!/com\.android\.chrome|com\.google\.android\.googlequicksearchbox/i.test(document.referrer||"");
+function urlChrome(){var u=location.href.replace(/^https?:\/\//,"");return "intent://"+u+"#Intent;scheme=https;package=com.android.chrome;end"}
+var LOCAL_OK=false,DIRECT=APK;
+function urlAbsolue(u){try{return new URL(u,location.href).href}catch(e){return u}}
+function dessinerLien(){
+  var z=document.getElementById("lien"); if(!z)return;
+  if(estIphone||(!estAndroid&&!dansAppli&&false)){z.style.display="none";return}
+  var abs=urlAbsolue(DIRECT);
+  z.innerHTML="<b style='color:var(--t)'>Lien direct du fichier</b><div class='u'></div><div class='r'><a class='btn2' id='ld' download='sabi.apk'>⬇ Télécharger sabi.apk</a><button type='button' class='btn2' id='lc'>Copier le lien</button></div>"+"";
+  z.querySelector(".u").textContent=abs;
+  var a=document.getElementById("ld");a.href=DIRECT;
+  a.addEventListener("click",function(){instructionsInstall()});
+  document.getElementById("lc").onclick=function(){copier(abs,this)};
+}
+btn.href=DIRECT;
+fetch("sabi.apk",{method:"HEAD"}).then(function(r){
+  var t=r.headers.get("content-type")||"",l=parseInt(r.headers.get("content-length")||"0",10);
+  if(r.ok&&!/text\/html/i.test(t)&&(!l||l>500000)){LOCAL_OK=true;DIRECT="sabi.apk";btn.href=DIRECT;if(l)TAILLE_CONNUE=l;dessinerLien()}
+}).catch(function(){});
+var dlz=document.getElementById("dlz"),zipnote=document.getElementById("zipnote");
+function instructionsZip(){
+  apres.hidden=false;
+  apres.innerHTML="<b>Installe Sabi depuis le .zip</b><ol><li>Quand le téléchargement est fini, ouvre l'appli <b>Fichiers</b> &gt; <b>Téléchargements</b>.</li><li>Touche <b>sabi.zip</b> puis <b>Extraire</b> (ou « Décompresser »).</li><li>Touche <b>sabi.apk</b> puis <b>Installer</b>. Autorise l'installation d'applis inconnues si Android le demande.</li></ol>";
+  setTimeout(function(){apres.scrollIntoView({behavior:"smooth",block:"nearest"})},400);
+}
+if(dlz){
+  var ZIP_GH="https://github.com/"+DEPOT+"/releases/download/sabi-derniere-version/sabi.zip";
+  dlz.href=ZIP_GH;
+  if(!estIphone&&!dansAppli){dlz.style.display="inline-flex";zipnote.style.display="block"}
+  dlz.addEventListener("click",function(){instructionsZip()});
+  if(!estIphone&&!dansAppli)fetch("sabi.zip",{method:"HEAD"}).then(function(r){
+    var t=r.headers.get("content-type")||"",l=parseInt(r.headers.get("content-length")||"0",10);
+    if(r.ok&&!/text\/html/i.test(t)&&(!l||l>500000))dlz.href="sabi.zip";
+  }).catch(function(){});
+}
+function boite(html,warn){var d=document.createElement("div");d.className="box"+(warn?" warn":"");d.innerHTML=html;return d}
+function copier(txt,b){try{navigator.clipboard.writeText(txt).then(function(){b.textContent="✓ Lien copié"})}catch(e){var t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");b.textContent="✓ Lien copié"}catch(x){}document.body.removeChild(t)}}
+function boutonCopie(){var b=document.createElement("button");b.className="btn2";b.type="button";b.textContent="Copier le lien de cette page";b.onclick=function(){copier(location.href,b)};return b}
+if(viaAppli&&!dansAppli&&estAndroid){
+  var w2=boite("<b>Tu as ouvert ce lien depuis une autre appli (WhatsApp…)</b><br>Dans ce mode, Chrome n'affiche pas la confirmation et le fichier reste bloqué en « Non confirmé ». Ouvre la page directement dans Chrome.",true);
+  var oc=document.createElement("a");oc.className="btn2";oc.href=urlChrome();oc.textContent="Ouvrir dans Chrome";w2.appendChild(document.createElement("br"));w2.appendChild(oc);w2.appendChild(document.createTextNode(" "));w2.appendChild(boutonCopie());avis.appendChild(w2);
+}
+if(dansAppli){
+  var w=boite("<b>Ouvre cette page dans Chrome</b><br>Le navigateur intégré (WhatsApp, Facebook, TikTok…) bloque le téléchargement des applications. Touche le menu <b>⋮</b> ou <b>…</b> puis « Ouvrir dans le navigateur », ou copie le lien et colle-le dans Chrome.",true);w.appendChild(document.createElement("br"));w.appendChild(boutonCopie());avis.appendChild(w);
+}
+if(estIphone){
+  btn.style.display="none";
+  var h="<b>Tu es sur iPhone ?</b><br>L'application Android (.apk) ne s'installe pas sur iPhone. Utilise la version web : ouvre-la dans <b>Safari</b>, touche <b>Partager</b> puis <b>« Sur l'écran d'accueil »</b>.";
+  var bx=boite(h,false);
+  if(URL_VERSION_WEB){var a=document.createElement("a");a.className="btn2";a.href=URL_VERSION_WEB;a.textContent="Ouvrir Sabi (version web)";bx.appendChild(document.createElement("br"));bx.appendChild(a)}
+  avis.appendChild(bx);
+}else if(!estAndroid){
+  var bx2=boite("<b>Tu es sur ordinateur ?</b><br>Sabi s'installe sur un téléphone <b>Android</b>. Ouvre cette page depuis ton téléphone (copie le lien et envoie-le-toi), puis télécharge l'application.",false);
+  bx2.appendChild(boutonCopie());
+  if(URL_VERSION_WEB){var a2=document.createElement("a");a2.className="btn2";a2.style.marginLeft="8px";a2.href=URL_VERSION_WEB;a2.textContent="Ouvrir la version web";bx2.appendChild(a2)}
+  avis.appendChild(bx2);
+}
+var etat={m:[],r:0,t:0},prog=document.getElementById("prog"),enCours=null,TAILLE_CONNUE=0,URL_LOCAL="sabi.apk?v="+Date.now();
+function fmt(o){return (o/1048576).toFixed(1).replace(".",",")+" Mo"}
+function instructionsInstall(){
+  apres.hidden=false;
+  apres.innerHTML="<b>Installe Sabi maintenant</b><ol><li>Ouvre le fichier <b>sabi.apk</b> : touche <b>Ouvrir</b> dans la notification « Téléchargement terminé » (ou Fichiers &gt; Téléchargements).</li><li>Si Chrome demande « Conserver ? », touche <b>Conserver</b> ou <b>Télécharger quand même</b>.</li><li>Autorise l'installation d'applis inconnues si Android le demande, puis touche <b>Installer</b>.</li></ol><p style='margin-top:8px;font-size:13px'>Android demande toujours cette dernière confirmation toi-même : aucun site ne peut installer une appli à ta place.</p>";
+}
+function repliDirect(raison){
+  prog.className="on";
+  prog.innerHTML="<div class='t'>Suivi indisponible</div><p style='margin-top:8px'>"+(raison||"")+" Utilise le <b>lien direct</b> ci-dessous : le téléchargement se fait avec la barre de notifications d'Android.</p>";
+  instructionsInstall();
+}
+function lancer(){
+  if(enCours)return;
+  var abandon=false,ctrl=window.AbortController?new AbortController():null,t0=Date.now();
+  prog.className="on";
+  prog.innerHTML="<div class='t'><span>Téléchargement de Sabi</span><span id='pc'>0 %</span></div><div class='barre indet' id='bb'><i id='bi'></i></div><div class='ligne'><span id='tx'>Connexion…</span><span id='vt'></span></div><p id='rest' style='margin-top:8px;font-size:12px'>Reste sur cette page jusqu'à la fin.</p><button type='button' class='btn2' id='ann' style='margin-top:6px'>Annuler</button>";
+  apres.hidden=true;
+  var pc=document.getElementById("pc"),bb=document.getElementById("bb"),bi=document.getElementById("bi"),tx=document.getElementById("tx"),vt=document.getElementById("vt");
+  var verrou=null;try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(function(w){verrou=w}).catch(function(){})}catch(e){}
+  function libere(){try{verrou&&verrou.release()}catch(e){}enCours=null}
+  document.getElementById("ann").onclick=function(){etat={m:[],r:0,t:0};abandon=true;try{ctrl&&ctrl.abort()}catch(e){}libere();prog.className="";btn.textContent="⬇ Télécharger l'APK"};
+  enCours=true;btn.textContent="Téléchargement en cours…";
+  var base=etat.r;
+  function affiche(){
+    var now=Date.now();
+    if(now-dernierMaj<120)return;
+    dernierMaj=now;
+    var sec=Math.max(0.5,(now-t0)/1000),v=Math.max(1,(etat.r-base)/sec);
+    if(etat.t){bb.className="barre";var p=Math.min(100,Math.floor(etat.r*100/etat.t));bi.style.width=p+"%";pc.textContent=p+" %";tx.textContent=fmt(etat.r)+" / "+fmt(etat.t);var reste=Math.max(0,(etat.t-etat.r)/v);vt.textContent=(v>=1048576?(v/1048576).toFixed(1).replace(".",",")+" Mo/s":Math.round(v/1024)+" Ko/s")+" · ~"+(reste>90?Math.ceil(reste/60)+" min":Math.ceil(reste)+" s")}
+    else{tx.textContent=fmt(etat.r);pc.textContent=fmt(etat.r);vt.textContent=Math.round(v/1024)+" Ko/s"}
+  }
+  var dernierMaj=0,essais=0;
+  function attendre(ms){return new Promise(function(ok){
+    if(navigator.onLine===false){var f=function(){window.removeEventListener("online",f);ok()};window.addEventListener("online",f);setTimeout(f,30000)}
+    else setTimeout(ok,ms)})}
+  function obtenir(){
+    var h={};if(etat.r>0)h.Range="bytes="+etat.r+"-";
+    return fetch(URL_LOCAL,{signal:ctrl?ctrl.signal:undefined,headers:h}).then(function(r){
+      if(!r.ok||!r.body||!r.body.getReader)throw new Error("indispo");
+      if(/text\/html/i.test(r.headers.get("content-type")||""))throw new Error("indispo");
+      if(etat.r>0&&r.status===200){etat.m=[];etat.r=0;base=0}
+      var cr=r.headers.get("content-range"),mm=cr&&cr.match(/\/(\d+)$/),cl=parseInt(r.headers.get("content-length")||"0",10)||0;
+      if(r.headers.get("content-encoding"))etat.t=TAILLE_CONNUE||0;
+      else if(mm)etat.t=+mm[1];
+      else if(cl&&r.status===200)etat.t=cl;
+      else if(!etat.t)etat.t=TAILLE_CONNUE||0;
+      var lecteur=r.body.getReader();
+      function pas(){
+        return lecteur.read().then(function(x){
+          if(x.done)return;
+          etat.m.push(x.value);etat.r+=x.value.length;
+          affiche();
+          return pas();
+        });
+      }
+      return pas();
+    });
+  }
+  function boucle(){
+    return obtenir().then(function(){
+      if(etat.t&&etat.r<etat.t)throw new Error("coupe");
+    }).catch(function(e){
+      if(abandon||(e&&(e.message==="indispo"||e.name==="AbortError")))throw e;
+      essais++;
+      if(essais>12)throw e;
+      tx.textContent="Connexion instable… reprise "+essais;vt.textContent="";
+      return attendre(Math.min(800*essais,5000)).then(boucle);
+    });
+  }
+  boucle().then(function(){return new Blob(etat.m,{type:"application/vnd.android.package-archive"})
+  }).then(function(blob){
+    if(abandon||!blob)return;
+    etat={m:[],r:0,t:0};
+    if(blob.size<500000)throw new Error("indispo");
+    bb.className="barre";bi.style.width="100%";pc.textContent="100 %";
+    document.getElementById("ann").style.display="none";document.getElementById("rest").style.display="none";
+    tx.innerHTML="<span class='ok'>✓ Téléchargement terminé ("+fmt(blob.size)+")</span>";vt.textContent="";
+    try{navigator.vibrate&&navigator.vibrate([120,60,120])}catch(e){}
+    var ancienTitre=document.title;document.title="✓ Sabi téléchargé";setTimeout(function(){document.title=ancienTitre},8000);
+    var b2=document.createElement("a");b2.className="btn";b2.style.cssText="width:100%;margin-top:12px;text-align:center";b2.href=URL_LOCAL;b2.setAttribute("download","sabi.apk");b2.textContent="📲 Enregistrer Sabi sur mon téléphone";
+    b2.addEventListener("click",function(){
+      setTimeout(function(){b2.textContent="✓ Enregistrement lancé — voir ta barre de notifications";b2.className="btn2";b2.style.cssText="width:100%;margin-top:12px;text-align:center";},300);
+      instructionsInstall();setTimeout(function(){apres.scrollIntoView({behavior:"smooth",block:"nearest"})},500);
+    });
+    prog.appendChild(b2);
+    var note=document.createElement("p");note.style.cssText="margin-top:8px;font-size:12px";note.innerHTML="Touche ce bouton, puis <b>Conserver</b> si Chrome demande de garder le fichier. Si tu vois « Non confirmé », ouvre Chrome &gt; ⋮ &gt; Téléchargements et touche <b>Conserver</b>.";prog.appendChild(note);
+    btn.textContent="✓ Téléchargé";setTimeout(function(){btn.textContent="⬇ Télécharger l'APK"},6000);
+    setTimeout(function(){apres.scrollIntoView({behavior:"smooth",block:"nearest"})},400);
+    libere();
+  }).catch(function(e){
+    if(abandon)return;
+    libere();
+    if(e&&e.message==="indispo"){btn.textContent="⬇ Télécharger l'APK";repliDirect("Le suivi de progression n'est pas disponible ici.");return}
+    prog.innerHTML="<div class='t'>Téléchargement interrompu</div><p class='err' style='margin-top:8px'>La connexion a été coupée à "+fmt(etat.r)+(etat.t?" sur "+fmt(etat.t):"")+". Le début est gardé : touche <b>Reprendre</b> pour continuer là où ça s'est arrêté.</p><button type='button' class='btn2' id='rep'>▶ Reprendre</button> <a class='btn2' href='"+DIRECT+"' download='sabi.apk' style='margin-left:6px'>Télécharger avec Chrome</a>";
+    btn.textContent="⬇ Télécharger l'APK";
+    document.getElementById("rep").onclick=lancer;
+  });
+}
+btn.addEventListener("click",function(e){
+  if(dansAppli||estIphone)return;
+  if(!LOCAL_OK||!(window.fetch&&window.ReadableStream&&window.Blob)){
+    instructionsInstall();
+    setTimeout(function(){apres.scrollIntoView({behavior:"smooth",block:"nearest"})},400);
+    return;
+  }
+  e.preventDefault();
+  lancer();
+});
+
+dessinerLien();
+function extraire(src){
+  var i=src.indexOf("var GUIDE_SECTIONS = ["); if(i<0) throw 0;
+  var d=0,q=null,deb=src.indexOf("[",i);
+  for(var k=deb;k<src.length;k++){var c=src[k];
+    if(q){if(c==="\\")k++;else if(c===q)q=null;continue}
+    if(c==='"'||c==="'"||c==="`"){q=c;continue}
+    if(c==="[")d++;
+    if(c==="]"){d--;if(d===0){var arr=(new Function("return "+src.slice(deb,k+1)))();return valider(arr)}}
+  }
+  throw 0;
+}
+function valider(a){
+  if(!Array.isArray(a)||!a.length) throw 0;
+  return a.filter(function(s){return s&&typeof s.titre==="string"&&Array.isArray(s.blocs)});
+}
+function el(t,txt,cl){var e=document.createElement(t);if(txt!=null)e.textContent=txt;if(cl)e.className=cl;return e}
+function rendre(secs){
+  var g=document.getElementById("g");g.textContent="";
+  secs.forEach(function(s,idx){
+    var d=el("details");d.appendChild(el("summary",s.titre));
+    var b=el("div",null,"bd");
+    s.blocs.forEach(function(x){
+      if(x.type==="sous-titre") b.appendChild(el("h4",x.texte));
+      else if(x.type==="list"){var u=el("ul");(x.items||[]).forEach(function(it){u.appendChild(el("li",it))});b.appendChild(u)}
+      else if(x.texte) b.appendChild(el("p",x.texte));
+    });
+    d.appendChild(b);d.dataset.t=(s.titre+" "+b.textContent).toLowerCase();
+    g.appendChild(d);
+  });
+}
+function norm(t){return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
+document.getElementById("q").addEventListener("input",function(e){
+  var v=norm(e.target.value.trim());
+  document.querySelectorAll("#g details").forEach(function(d){
+    var ok=!v||norm(d.dataset.t).indexOf(v)>=0;d.style.display=ok?"":"none";
+    if(v&&ok)d.open=true;else if(!v)d.open=false;
+  });
+});
+function fraicheur(txt){document.getElementById("fresh").innerHTML=txt}
+
+var CLE="sabi_site_guide", TTL=6*3600*1000, cache=null;
+try{cache=JSON.parse(localStorage.getItem(CLE)||"null")}catch(e){}
+if(cache&&cache.secs){rendre(cache.secs);fraicheur("Guide synchronisé avec l'application · <b>"+new Date(cache.t).toLocaleDateString("fr-FR")+"</b>")}
+else{rendre(valider(COPIE));fraicheur("Guide intégré au site, mise à jour automatique dès que possible.")}
+if(!cache||Date.now()-cache.t>TTL){
+  fetch(SOURCE).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){
+    var secs=extraire(t);rendre(secs);
+    try{localStorage.setItem(CLE,JSON.stringify({t:Date.now(),secs:secs}))}catch(e){}
+    fraicheur("Guide synchronisé avec l'application · <b>à l'instant</b>");
+  }).catch(function(){});
+}
+
+var META_CLE="sabi_site_meta";
+function afficherMeta(m){
+  var t="Android · fichier .apk";
+  if(m&&m.taille)t+=" · "+m.taille+" Mo";
+  if(m&&m.date)t+=" · version du "+m.date;
+  if(m&&m.dl>0)t+=" · "+m.dl+" téléchargement"+(m.dl>1?"s":"");
+  document.getElementById("meta").textContent=t;
+}
+try{afficherMeta(JSON.parse(localStorage.getItem(META_CLE)||"null"))}catch(e){}
+function majMeta(){
+  fetch(API).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
+    var a=(j.assets||[]).filter(function(x){return /\.apk$/.test(x.name)})[0];
+    if(!a)return;
+    TAILLE_CONNUE=a.size||0;var m={taille:(a.size/1048576).toFixed(1).replace(".",","),date:new Date(a.updated_at||j.published_at).toLocaleDateString("fr-FR"),dl:a.download_count||0};
+    afficherMeta(m);
+    try{localStorage.setItem(META_CLE,JSON.stringify(m))}catch(e){}
+  }).catch(function(){});
+}
+majMeta();
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")majMeta()});
+})();
+</script>
+</body>
+</html>
