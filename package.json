@@ -1,0 +1,12 @@
+{
+  "name": "sabi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sabi, l'appli des étudiants de l'IUT FV Bandjoun",
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/push-notifications": "^6.0.3"
+  }
+}

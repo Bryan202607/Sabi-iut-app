@@ -1,0 +1,9 @@
+{
+  "appId": "com.sabi.app",
+  "appName": "Sabi",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "plugins": {
+    "PushNotifications": { "presentationOptions": ["badge", "sound", "alert"] }
+  }
+}
