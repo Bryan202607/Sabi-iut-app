@@ -1,0 +1,566 @@
+{
+  "rules": {
+    "classementHebdo": {
+      ".read": "auth != null",
+      "$semaine": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
+        }
+      }
+    },
+    "duels": {
+      ".read": "auth != null",
+      "$code": {
+        ".write": "auth != null"
+      }
+    },
+    "notifications": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('admin').val() === true)",
+        ".write": "auth != null && root.child('users').child(auth.uid).child('admin').val() === true",
+        "$notifId": {
+          "lu": {
+            ".write": "auth != null && auth.uid === $uid"
+          }
+        }
+      }
+    },
+    "matriculeIndex": {
+      ".read": "auth != null",
+      "$matricule": {
+        ".write": "auth != null && (!data.exists() || data.val() === auth.uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "myscore": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('admin').val() === true)",
+        ".write": "auth != null && root.child('users').child(auth.uid).child('admin').val() === true"
+      }
+    },
+    "users": {
+      ".read": "auth != null",
+      "$uid": {
+        "photoUrl": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.isString() && newData.val().length < 500"
+        },
+        ".read": "auth != null",
+        "pseudo": {
+          ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 30",
+          ".write": "auth != null && auth.uid === $uid"
+        },
+        "fcmToken": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "matricule": {
+          ".write": "auth != null && ((auth.uid === $uid && !data.exists()) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+        },
+        "filiere": {
+          ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 60",
+          ".write": "auth != null && ((auth.uid === $uid && !data.exists()) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+        },
+        "annee": {
+          ".validate": "newData.isString()",
+          ".write": "auth != null && ((auth.uid === $uid && !data.exists()) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+        },
+        "points": {
+          ".validate": "newData.isNumber() && newData.val() >= 0",
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com' || (auth.uid === $uid && (!data.exists() ? newData.val() === 0 : newData.val() <= data.val() + 20)))"
+        },
+        "pointsTotal": {
+          ".validate": "newData.isNumber() && newData.val() >= 0",
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com' || (auth.uid === $uid && (!data.exists() ? newData.val() === 0 : newData.val() <= data.val() + 20)))"
+        },
+        "vip": {
+          ".validate": "newData.isBoolean()",
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+        },
+        "admin": {
+          ".validate": "newData.isBoolean()",
+          ".write": "auth != null && (auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com') && auth.uid !== $uid"
+        },
+        "whatsapp": {
+          ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+          ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+        },
+        "abonnement": {
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+          "tier": {
+            ".validate": "newData.isString() && (newData.val() === 'gratuit' || newData.val() === 'pro' || newData.val() === 'proplus')"
+          },
+          "expireLe": {
+            ".validate": "newData.isNumber()"
+          }
+        },
+        "confidentialiteAcceptee": {
+          ".validate": "newData.isNumber()",
+          ".write": "auth != null && auth.uid === $uid && !data.exists()"
+        },
+        "badges": {
+          ".write": "auth != null && auth.uid === $uid"
+        },
+        "badgeActif": {
+          ".write": "auth != null && auth.uid === $uid"
+        },
+        "simulateur": {
+          ".write": "auth != null && auth.uid === $uid"
+        },
+        "progressionHebdo": {
+          ".write": "auth != null && auth.uid === $uid"
+        },
+        "objectifJour": {
+          ".write": "auth != null && auth.uid === $uid"
+        },
+        "dernierBonus": {
+          ".write": "auth != null && auth.uid === $uid"
+        },
+        "derniereRoue": {
+          ".write": "auth != null && auth.uid === $uid && (!data.exists() || data.val() < newData.val())",
+          ".validate": "newData.isString() && newData.val().length === 10"
+        }
+      }
+    },
+    "vipDemandes": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "abonnementDemandes": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "paiements": {
+      "$paiementId": {
+        ".read": "auth != null && (data.child('uid').val() === auth.uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+        ".write": "auth != null && (auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "promotions": {
+      ".read": "auth != null",
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+    },
+    "demandesAnnee": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+      ".write": "auth != null"
+    },
+    "demandesFiliere": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('admin').val() === true",
+      "$id": {
+        ".write": "auth != null && (!data.exists() ? newData.child('uid').val() === auth.uid : root.child('users').child(auth.uid).child('admin').val() === true)"
+      }
+    },
+    "demandesMatricule": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "resumes": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com' || (root.child('users').child(auth.uid).child('abonnement').child('tier').val() === 'proplus' && root.child('users').child(auth.uid).child('abonnement').child('expireLe').val() > now))",
+      "$id": {
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "cards": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && (!data.exists() ? newData.child('auteurUid').val() === auth.uid : root.child('users').child(auth.uid).child('admin').val() === true)",
+        "auteurUid": {
+          ".validate": "newData.isString()"
+        },
+        "auteur": {
+          ".validate": "newData.isString()",
+          ".write": "auth != null && (!data.parent().child('auteurUid').exists() || data.parent().child('auteurUid').val() === auth.uid || root.child('users').child(auth.uid).child('admin').val() === true)"
+        },
+        "contenu": {
+          ".validate": "newData.isString() && newData.val().length >= 10 && newData.val().length <= 2000",
+          ".write": "auth != null && (!data.parent().child('auteurUid').exists() || data.parent().child('auteurUid').val() === auth.uid || root.child('users').child(auth.uid).child('admin').val() === true)"
+        },
+        "filiere": {
+          ".validate": "newData.isString()",
+          ".write": "auth != null && (!data.parent().child('auteurUid').exists() || data.parent().child('auteurUid').val() === auth.uid || root.child('users').child(auth.uid).child('admin').val() === true)"
+        },
+        "up": {
+          ".validate": "newData.isNumber() && newData.val() >= 0",
+          ".write": "auth != null"
+        },
+        "down": {
+          ".validate": "newData.isNumber() && newData.val() >= 0",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "boussole": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && (newData.exists() || root.child('users').child(auth.uid).child('admin').val() === true)"
+      }
+    },
+    "carte": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && (!data.exists() || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "chat": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && (!data.exists() || (data.exists() && !newData.exists() && data.child('uid').val() === auth.uid) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+        "texte": {
+          ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 500"
+        },
+        "pseudo": {
+          ".validate": "newData.isString()"
+        },
+        "uid": {
+          ".validate": "newData.val() === auth.uid"
+        },
+        "imageUrl": {
+          ".validate": "newData.isString() && newData.val().length <= 500 && newData.val().beginsWith('https://')"
+        },
+        "reponse": {
+          "id": {
+            ".validate": "newData.isString()"
+          },
+          "pseudo": {
+            ".validate": "newData.isString() && newData.val().length <= 60"
+          },
+          "extrait": {
+            ".validate": "newData.isString() && newData.val().length <= 100"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "epreuve": {
+          "id": {
+            ".validate": "newData.isString() && newData.val().length <= 100"
+          },
+          "titre": {
+            ".validate": "newData.isString() && newData.val().length <= 120"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "epreuves": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+      "$annee": {
+        "$filiere": {
+          ".read": "auth != null && ((root.child('users').child(auth.uid).child('annee').val() === $annee && root.child('users').child(auth.uid).child('filiere').val() === $filiere && root.child('users').child(auth.uid).child('abonnement').child('expireLe').val() > now && (root.child('users').child(auth.uid).child('abonnement').child('tier').val() === 'pro' || root.child('users').child(auth.uid).child('abonnement').child('tier').val() === 'proplus')) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+          ".write": "auth != null && (auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com' || (root.child('users').child(auth.uid).child('admin').val() === true && root.child('users').child(auth.uid).child('filiere').val() === $filiere))",
+          "$epId": {
+            "corrigeIA": {
+              ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com' || (root.child('users').child(auth.uid).child('abonnement').child('tier').val() === 'proplus' && root.child('users').child(auth.uid).child('abonnement').child('expireLe').val() > now))",
+              ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com' || (root.child('users').child(auth.uid).child('abonnement').child('tier').val() === 'proplus' && root.child('users').child(auth.uid).child('abonnement').child('expireLe').val() > now))"
+            }
+          }
+        }
+      }
+    },
+    "pointsLog": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid && newData.child('n').isNumber() && newData.child('n').val() > 0 && newData.child('n').val() <= 20) || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')"
+      }
+    },
+    "bounties": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null"
+      }
+    },
+    "support": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+        "$msgId": {
+          "auteur": {
+            ".validate": "newData.isString() && (newData.val() === 'etudiant' || newData.val() === 'proprietaire')"
+          },
+          "texte": {
+            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 1000"
+          }
+        }
+      }
+    },
+    "salonsFiliere": {
+      "$filiere": {
+        "messages": {
+          ".read": "auth != null && (root.child('users').child(auth.uid).child('filiere').val() === $filiere || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+          "$id": {
+            ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com' || (root.child('users').child(auth.uid).child('filiere').val() === $filiere && ((!data.exists() && newData.child('uid').val() === auth.uid) || (data.exists() && !newData.exists() && data.child('uid').val() === auth.uid))))",
+            ".validate": "newData.hasChildren(['uid','pseudo','timestamp']) && (newData.child('texte').exists() || newData.child('imageUrl').exists() || newData.child('epreuve').exists())",
+            "uid": {
+              ".validate": "newData.val() === auth.uid"
+            },
+            "pseudo": {
+              ".validate": "newData.isString() && newData.val().length <= 60"
+            },
+            "texte": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 500"
+            },
+            "badge": {
+              ".validate": "newData.isString() && newData.val().length <= 60"
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "imageUrl": {
+              ".validate": "newData.isString() && newData.val().length <= 500 && newData.val().beginsWith('https://')"
+            },
+            "reponse": {
+              "id": {
+                ".validate": "newData.isString()"
+              },
+              "pseudo": {
+                ".validate": "newData.isString() && newData.val().length <= 60"
+              },
+              "extrait": {
+                ".validate": "newData.isString() && newData.val().length <= 100"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "epreuve": {
+              "id": {
+                ".validate": "newData.isString() && newData.val().length <= 100"
+              },
+              "titre": {
+                ".validate": "newData.isString() && newData.val().length <= 120"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    },
+    "dm": {
+      "$convId": {
+        "messages": {
+          ".read": "auth != null && $convId.matches(/^[A-Za-z0-9]+_[A-Za-z0-9]+$/) && $convId.contains(auth.uid)",
+          "$id": {
+            ".write": "auth != null && $convId.matches(/^[A-Za-z0-9]+_[A-Za-z0-9]+$/) && $convId.contains(auth.uid) && ((!data.exists() && newData.child('uid').val() === auth.uid && !root.child('blocages').child($convId.replace(auth.uid, '').replace('_', '')).child(auth.uid).exists()) || (data.exists() && !newData.exists() && data.child('uid').val() === auth.uid))",
+            ".validate": "newData.hasChildren(['uid','pseudo','timestamp']) && (newData.child('texte').exists() || newData.child('imageUrl').exists() || newData.child('epreuve').exists())",
+            "uid": {
+              ".validate": "newData.val() === auth.uid"
+            },
+            "pseudo": {
+              ".validate": "newData.isString() && newData.val().length <= 60"
+            },
+            "texte": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 500"
+            },
+            "badge": {
+              ".validate": "newData.isString() && newData.val().length <= 60"
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "imageUrl": {
+              ".validate": "newData.isString() && newData.val().length <= 500 && newData.val().beginsWith('https://')"
+            },
+            "reponse": {
+              "id": {
+                ".validate": "newData.isString()"
+              },
+              "pseudo": {
+                ".validate": "newData.isString() && newData.val().length <= 60"
+              },
+              "extrait": {
+                ".validate": "newData.isString() && newData.val().length <= 100"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "epreuve": {
+              "id": {
+                ".validate": "newData.isString() && newData.val().length <= 100"
+              },
+              "titre": {
+                ".validate": "newData.isString() && newData.val().length <= 120"
+              },
+              "$other": {
+                ".validate": false
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    },
+    "dmIndex": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$convId": {
+          ".write": "auth != null && $convId.matches(/^[A-Za-z0-9]+_[A-Za-z0-9]+$/) && $convId.contains(auth.uid) && $convId.contains($uid) && (auth.uid === $uid || !root.child('blocages').child($uid).child(auth.uid).exists())",
+          "autre": {
+            ".validate": "newData.isString() && newData.val().length <= 128"
+          },
+          "autrePseudo": {
+            ".validate": "newData.isString() && newData.val().length <= 60"
+          },
+          "dernier": {
+            ".validate": "newData.isString() && newData.val().length <= 120"
+          },
+          "dernierTs": {
+            ".validate": "newData.isNumber()"
+          },
+          "dernierDe": {
+            ".validate": "newData.isString() && newData.val().length <= 128"
+          },
+          "luLe": {
+            ".validate": "newData.isNumber()"
+          },
+          "luAutreLe": {
+            ".validate": "newData.isNumber()"
+          },
+          "nb": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "blocages": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$cible": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        }
+      }
+    },
+    "epingles": {
+      ".read": "auth != null",
+      "$salon": {
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+        "texte": {
+          ".validate": "newData.isString() && newData.val().length <= 300"
+        },
+        "auteur": {
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    "signalements": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('deUid').val() === auth.uid) || (root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com'))",
+        ".validate": "newData.hasChildren(['deUid','auteurPseudo','extrait','timestamp'])",
+        "extrait": {
+          ".validate": "newData.isString() && newData.val().length <= 150"
+        },
+        "chemin": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        },
+        "msgId": {
+          ".validate": "newData.isString() && newData.val().length <= 100"
+        }
+      }
+    },
+    "demandesEpreuves": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid) || (data.exists() && (data.child('uid').val() === auth.uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')))",
+        ".validate": "newData.hasChildren(['uid','pseudo','matiere','filiere','timestamp'])",
+        "uid": {
+          ".validate": "newData.isString()"
+        },
+        "pseudo": {
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        },
+        "matiere": {
+          ".validate": "newData.isString() && newData.val().length <= 120"
+        },
+        "code": {
+          ".validate": "newData.isString() && newData.val().length <= 30"
+        },
+        "type": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "filiere": {
+          ".validate": "newData.isString() && newData.val().length <= 120"
+        },
+        "annee": {
+          ".validate": "newData.isString() && newData.val().length <= 30"
+        },
+        "semestre": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "anneeSujet": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "note": {
+          ".validate": "newData.isString() && newData.val().length <= 300"
+        },
+        "comblePar": {
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        },
+        "statut": {
+          ".validate": "newData.val() === 'ouverte' || newData.val() === 'comblee'"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "soutiens": {
+          "$u": {
+            ".write": "auth != null && auth.uid === $u",
+            ".validate": "newData.isBoolean()"
+          }
+        },
+        "reponses": {
+          "$rid": {
+            ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid) || (data.exists() && (data.child('uid').val() === auth.uid || root.child('demandesEpreuves').child($id).child('uid').val() === auth.uid || root.child('users').child(auth.uid).child('admin').val() === true || auth.token.email === 'bryansikame2026@gmail.com' || auth.token.email === 'bryansikame2025@gmail.com')))",
+            ".validate": "newData.hasChildren(['uid','pseudo','timestamp']) && (newData.child('texte').exists() || newData.child('imageUrl').exists() || newData.child('pdfUrl').exists())",
+            "uid": {
+              ".validate": "newData.val() === auth.uid"
+            },
+            "pseudo": {
+              ".validate": "newData.isString() && newData.val().length <= 60"
+            },
+            "texte": {
+              ".validate": "newData.isString() && newData.val().length <= 300"
+            },
+            "imageUrl": {
+              ".validate": "newData.isString() && newData.val().length <= 500 && newData.val().beginsWith('https://')"
+            },
+            "pdfUrl": {
+              ".validate": "newData.isString() && newData.val().length <= 500 && newData.val().beginsWith('https://')"
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

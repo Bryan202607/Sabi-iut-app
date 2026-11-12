@@ -1,0 +1,73 @@
+{
+  "name": "Sabi — IUT FV Bandjoun",
+  "short_name": "Sabi",
+  "description": "Ce que les grands savaient, tout le monde le sait maintenant.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#131313",
+  "theme_color": "#131313",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
+  "display_override": ["window-controls-overlay", "tabbed", "standalone", "minimal-ui"],
+  "id": "/",
+  "edge_side_panel": { "preferred_width": 480 },
+  "note_taking": { "new_note_url": "./index.html?tab=contribuer" },
+  "launch_handler": { "client_mode": "focus-existing" },
+  "protocol_handlers": [
+    { "protocol": "web+sabi", "url": "./index.html?lien=%s" }
+  ],
+  "file_handlers": [
+    {
+      "action": "./index.html?tab=myscoreAdmin",
+      "accept": { "application/pdf": [".pdf"], "image/*": [".png", ".jpg", ".jpeg"] }
+    }
+  ],
+  "share_target": {
+    "action": "./index.html",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "titre_partage",
+      "text": "texte_partage",
+      "url": "lien_partage",
+      "files": [
+        { "name": "fichiers_partages", "accept": ["image/*"] }
+      ]
+    }
+  },
+  "shortcuts": [
+    { "name": "Épreuves", "short_name": "Épreuves", "url": "./index.html?tab=epreuves", "description": "Anciens sujets et corrigés" },
+    { "name": "Actualités", "short_name": "Actus", "url": "./index.html?tab=actualites", "description": "Fil d'actualités et astuces" },
+    { "name": "Chat", "short_name": "Chat", "url": "./index.html?tab=chat", "description": "Chat public IUT FV Bandjoun" }
+  ],
+  "screenshots": [
+    { "src": "screenshots/accueil.jpg", "sizes": "1080x2340", "type": "image/jpeg", "form_factor": "narrow", "label": "Accueil" },
+    { "src": "screenshots/epreuves.jpg", "sizes": "1080x2340", "type": "image/jpeg", "form_factor": "narrow", "label": "Épreuves" },
+    { "src": "screenshots/chat.jpg", "sizes": "1080x2340", "type": "image/jpeg", "form_factor": "narrow", "label": "Chat" },
+    { "src": "screenshots/profil.jpg", "sizes": "1080x2340", "type": "image/jpeg", "form_factor": "narrow", "label": "Profil" },
+    { "src": "screenshots/menu.jpg", "sizes": "1080x2340", "type": "image/jpeg", "form_factor": "narrow", "label": "Menu" }
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
